@@ -1,9 +1,15 @@
 import './featured-product.style.scss';
 import { useNavigate } from 'react-router-dom';
+import { isInCart } from '../../helpers';
+import { CartContext } from '../../context/cart-context';
+import { useContext } from 'react';
 
 export const FeaturedProduct = (props) => {
     const navigate = useNavigate();
-    const {title, imageUrl, price, id} = props;
+    const {title, imageUrl, price, id,description} = props;
+    const product = {title,imageUrl,price,id,description};
+    const {addProduct, cartItems} = useContext(CartContext);
+
 
     return(
         <div className='featured-product'>
@@ -13,7 +19,17 @@ export const FeaturedProduct = (props) => {
             <div className='name-price'>
                 <h3>{title}</h3>
                 <p>${price}</p>
-                <button className='button is-black nomad-btn'>ADD TO CART</button>
+
+                {!isInCart(product, cartItems) && <button className='button is-black nomad-btn' onClick={() => addProduct(product)}>ADD TO CART</button>
+                }
+
+                {
+                    isInCart(product,cartItems) && <button className='button is-white nomad-btn' 
+                    onClick={() => {}} id='btn-white-outline'>
+                        ADD MORE
+                    </button>
+                }
+                
             </div>
         </div>
     )

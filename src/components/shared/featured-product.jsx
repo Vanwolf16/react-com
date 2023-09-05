@@ -8,8 +8,9 @@ export const FeaturedProduct = (props) => {
     const navigate = useNavigate();
     const {title, imageUrl, price, id,description} = props;
     const product = {title,imageUrl,price,id,description};
-    const {addProduct, cartItems} = useContext(CartContext);
+    const {addProduct, cartItems, increase } = useContext(CartContext);
 
+    const itemInCart = isInCart(product, cartItems);
 
     return(
         <div className='featured-product'>
@@ -20,12 +21,12 @@ export const FeaturedProduct = (props) => {
                 <h3>{title}</h3>
                 <p>${price}</p>
 
-                {!isInCart(product, cartItems) && <button className='button is-black nomad-btn' onClick={() => addProduct(product)}>ADD TO CART</button>
+                { !itemInCart && <button className='button is-black nomad-btn' onClick={() => addProduct(product)}>ADD TO CART</button>
                 }
 
                 {
-                    isInCart(product,cartItems) && <button className='button is-white nomad-btn' 
-                    onClick={() => {}} id='btn-white-outline'>
+                    itemInCart && <button className='button is-white nomad-btn' 
+                    onClick={() => increase(product) } id='btn-white-outline'>
                         ADD MORE
                     </button>
                 }
